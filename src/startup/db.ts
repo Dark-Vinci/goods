@@ -2,16 +2,24 @@ import mongoose from "mongoose";
 import config from "config";
 import winston from "winston";
 
-async function connect(): Promise<void> {
-    const db = config.get("db");
+class DB {
+    private dbUri = config.get("db") as string;
 
-    try {
-        await mongoose.connect("mongodb://localhost/goodie");
-        winston.info(`connected to ${ db }`);
-    } catch (ex) {
-        winston.error(`couldnt connect to ${ db } because of ${ ex }`);
-        process.exit(1);
+    public static create () {
+        return new DB();
+    }
+
+    public async connect(): Promise<void> {
+        try {
+            await mongoose.connect(this.dbUri);
+            
+            winston.info(`connected to ${ this.dbUri }`);
+        } catch (ex: unknown) {
+            winston.error(`couldnt connect to ${ this.dbUri } because of ${ ex }`);
+
+            process.exit(1);
+        }
     }
 }
 
-export default connect;
+export default DB.create();

@@ -1,14 +1,22 @@
-import ResponseInterface from "../interface/return";
+import { okResponse, errorResponse } from "../interface/return";
 
-function response(status: number, message: string, data: object | null, error: object | null): ResponseInterface {
-    const responseData = {
-        status: status,
-        message: message,
-        data: data,
-        error: error,
+
+class Response {
+    public errorResponse(status: number, message: string, error: object): errorResponse {
+        const response = { status, message, error };
+
+        return response;
     }
 
-    return responseData
+    public okResponse(status: number, message: string, data: object): okResponse {
+        const response = { status, message, data };
+
+        return response;
+    }
+
+    public static create() {
+        return new Response();
+    }
 }
 
-export default response;
+export default Response.create();

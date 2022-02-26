@@ -1,9 +1,15 @@
 import bcrypt from "bcrypt";
 
-async function comparePassword(p1: string, p2: string): Promise<boolean> {
-    const isValid = await bcrypt.compare(p1, p2);
+class PasswordComparator {
+    public static create () {
+        return new PasswordComparator();
+    }
 
-    return isValid;
+    public async compare(p1: string, p2: string): Promise<boolean> {
+        const isValid = await bcrypt.compare(p1, p2);
+    
+        return isValid;
+    } 
 }
 
-export default comparePassword;
+export default PasswordComparator.create();

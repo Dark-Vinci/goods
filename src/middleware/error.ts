@@ -1,14 +1,24 @@
-import { Request, Response, NextFunction } from "express";
+import { 
+    Request, 
+    Response, 
+    NextFunction 
+} from "express";
 import winston from "winston";
 
-import response from "../helpers/response";
+import resp from "../helpers/response";
 
-function errorMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {
-    winston.error(err);
+class ErrorMiddleware {
+    public static create () {
+        return new ErrorMiddleware();
+    }
 
-    const resp = response(500, "internal server error", null, err);
-
-    return res.status(500).json(resp);
+    public init (err: Error, req: Request, res: Response, next: NextFunction) {
+        winston.error(err);
+    
+        const response = resp.errorResponse(500, "internal server error", err);
+    
+        return res.status(500).json(response);
+    }
 }
 
-export default errorMiddleware;
+export default ErrorMiddleware.create();

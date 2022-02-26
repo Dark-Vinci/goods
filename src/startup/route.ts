@@ -7,37 +7,37 @@ import morgan from "morgan";
 import express from "express";
 
 import errorHandler from "../middleware/error";
-import UserRouter from "../router/user";
-import AdminRouter from "../router/admin";
-import GoodRouter from "../router/goods";
-import HomeRouter from "../router/home";
-import SessionRouter from "../router/session";
+import userRouter from "../router/user";
+import adminRouter from "../router/admin";
+import goodRouter from "../router/goods";
+import homeRouter from "../router/home";
+import sessionRouter from "../router/session";
 
-function router(app: Express): void {
-    const userRouter = new UserRouter(app);
-    const adminRouter = new AdminRouter(app);
-    const goodRouter = new UserRouter(app);
-    const homeRouter = new AdminRouter(app);
-    const sessionRouter = new SessionRouter(app);
+class Route {
+    public static create () {
+        return new Route();
+    }
 
+    public init (app: Express): void {
+        app.use(xss());
+        app.use(helmet());
+        app.use(cors({ origin: "*" }));
+        app.use(compression());
+        app.use(morgan("tiny"));
+    
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+        // app.use(express.)
 
-    app.use(xss());
-    app.use(helmet());
-    app.use(cors({ origin: "*" }));
-    app.use(compression());
-    app.use(morgan("tiny"));
-
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-
-    // ! to be corrected;
-    app.use("/api/users", userRouter);
-    app.use("/api/goods", goodRouter);
-    app.use("/api/session", sessionRouter);
-    app.use("/api/home", homeRouter);
-    app.use("/api/admin", adminRouter);
-
-    app.use(errorHandler);
+        // * corrected
+        app.use("/api/users", userRouter);
+        app.use("/api/goods", goodRouter);
+        app.use("/api/session", sessionRouter);
+        app.use("/api/home", homeRouter);
+        app.use("/api/admin", adminRouter);
+    
+        app.use(errorHandler.init);
+    }
 }
 
-export default router;
+export default Route.create();

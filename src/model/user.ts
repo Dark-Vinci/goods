@@ -179,7 +179,7 @@ UserSchema.pre("save", async function (next: any) {
     let user = this as UserDocument;
 
     if (user.isModified("password")) {
-        user.password = await hashPassword(user.password);
+        user.password = await hashPassword.hash(user.password);
     }
 
     next();
@@ -188,7 +188,7 @@ UserSchema.pre("save", async function (next: any) {
 UserSchema.methods.comparePassword = async function (p: string): Promise<boolean> {
     let user = this as UserDocument;
 
-    const isValid = await comparePassword(user.password, p);
+    const isValid = await comparePassword.compare(user.password, p);
 
     return isValid;
 }

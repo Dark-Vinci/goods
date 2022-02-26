@@ -1,30 +1,39 @@
 import jwt from "jsonwebtoken";
 import config from "config";
-import { Request, Response, NextFunction } from "express";
+import { 
+    Request, 
+    Response, 
+    NextFunction 
+} from "express";
 
-import responseHelper from "../helpers/response";
+import resp from "../helpers/response";
 
-function jwtValidator (req: Request, res: Response, next: NextFunction) {
-    const token = req.header("x-auth-token");
+class JWTValidator {
+    public static create () {
+        return new JWTValidator();
+    }
 
-    if (!token) {
-        const response = responseHelper(401, "forbidden", null, { error: "no token has been provided" });
-        res.status(401).json(response);
-        return;
-    } 
-
-    try {
-        const decoded = jwt.verify(token, config.get("jwtKey"));
-
-        // @ts-ignore
-        req.user = decoded;
-
-        next();
-    } catch (ex) {
-        const response = responseHelper(400, "invalid token", null, { error: "authorization token provided is invalid" });
-        res.status(401).json(response);
-        return;
+    public validate (req: Request, res: Response, next: NextFunction) {
+        const token = req.header("x-auth-token") as string;
+    
+        if (!token) {
+            const response = resp.errorResponse(401, "forbidden", { error: "no token has been provided" });
+    
+            return res.status(401).json(response);
+        } 
+    
+        try {
+            const decoded = jwt.verify(token, config.get("jwtKey"));
+    
+            // @ts-ignore
+            req.user = decoded;
+    
+            next();
+        } catch (ex) {
+            const response = resp.errorResponse(400, "invalid token", { error: "authorization token provided is invalid" });
+            return res.status(401).json(response);
+        }
     }
 }
 
-export default jwtValidator;
+export default JWTValidator.create();

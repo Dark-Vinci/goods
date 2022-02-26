@@ -1,14 +1,22 @@
 import winston from "winston";
 
-function logging(): void {
-    winston.exceptions.handle(new winston.transports.File({ filename: "uncaughtExeptions.txt" }));
+class Logger {
+    public static create (): Logger {
+        return new Logger();
+    }
 
-    process.on("unhandledRejection", (ex) => {
-        throw ex;
-    });
+    public init(): void {
+        winston.exceptions.handle(new winston.transports.File({ filename: "uncaughtExeptions.txt" }));
 
-    winston.add(new winston.transports.File({ filename: "loggong.txt" }));
-    winston.add(new winston.transports.Console());
+        process.on("unhandledRejection", (ex) => {
+            throw ex;
+        });
+
+        winston.add(new winston.transports.File({ filename: "loggong.txt" }));
+        winston.add(new winston.transports.Console());
+    }
+    
 }
 
-export default logging;
+
+export default Logger.create();

@@ -10,7 +10,7 @@ import UserDocument from "../interface/user";
 import User from "../model/user";
 
 class UserService {
-    async createUser(input: DocumentDefinition<UserDocument>) {
+    async createUser(input: DocumentDefinition<UserDocument>): Promise<UserDocument> {
         const createdUser = await User.create(input);
         return createdUser;
     }
@@ -25,11 +25,11 @@ class UserService {
         return "user has been deleted";
     }
 
-    async getById(id: Schema.Types.ObjectId) {
+    async getById(id: Schema.Types.ObjectId): Promise<object> {
         const user = await User.findById(id);
 
         if (!user) {
-            return { user:null, message: "user not found" };
+            return { user: null, message: "user not found" };
         }
 
         const toReturn = { user, message: "user found" };

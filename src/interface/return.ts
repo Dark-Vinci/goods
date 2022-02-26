@@ -1,10 +1,15 @@
 
 
-interface response {
+interface okResponse {
     status: number;
-    data: object | null;
-    error: object | null;
+    data: object;
     message: string;
 }
 
-export default response;
+interface errorResponse {
+    status: number;
+    error: object;
+    message: string;
+}
+
+export { okResponse, errorResponse };

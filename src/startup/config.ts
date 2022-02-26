@@ -1,13 +1,19 @@
 import config from "config";
 import winston from "winston";
 
-function Config() {
-    const jwtKey = config.get("jwtKey");
+class Config {
+    private jwtKey = config.get("jwtKey") as string;
 
-    if (!jwtKey) {
-        winston.error("jwtkey is not defined");
-        process.exit(1);
+    public static create () {
+        return new Config();
+    }
+
+    public init () {
+        if (!this.jwtKey) {
+            winston.error("jwtkey is not defined");
+            process.exit(1);
+        }
     }
 }
 
-export default Config;
+export default Config.create();

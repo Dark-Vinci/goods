@@ -1,18 +1,26 @@
-import { Express, Router } from "express";
+import express, { Router } from "express";
+
+const router: Router = express.Router();
 
 class UserHandler {
     private router: Router = Router();
 
-    constructor(router: Express) {
+    constructor(router: Router) {
         this.router = router;
-    }
 
-    public initializeRoutes () {
         this.router.get('/create', );
         this.router.post(`$`, );
         this.router.put('/update', );
         this.router.delete('/delte',);
     }
+
+    public static create (r: Router) {
+        return new UserHandler(r);
+    }
+
+    public routerReturner () {
+        return this.router;
+    }
 }
 
-export default UserHandler;
+export default UserHandler.create(router).routerReturner();

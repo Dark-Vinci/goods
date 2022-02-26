@@ -1,25 +1,33 @@
-import { Express, Router } from "express";
+import express, { Router } from "express";
 
-import validate from "../helpers/validator";
-import AdminController from "../controller/admin";
-import { adminSchema, login } from "../schema/admin";
+// import validate from "../helpers/validator";
+// import AdminController from "../controller/admin";
+// import { adminSchema, login } from "../schema/admin";
+
+
+const router: Router = express.Router()
 
 class AdminHandler {
-    public path: String = "/admin";
-    private router: Router = Router();
-    private adminController = new AdminController();
+    private router: Router;
 
-    constructor(router: Express) {
+    constructor(router: Router) {
         this.router = router;
-    }
 
-    public initializeRoutes () {
-        this.router.post('/register', validate(adminSchema), this.adminController.register);
-        this.router.post("/login", validate(login), this.adminController.login);
+
+        this.router.post('/register', );
+        this.router.post("/login");
         this.router.post(`$`, );
         this.router.put('/update', );
         this.router.delete('/delte',);
     }
+
+    public static create (r: Router) {
+        return new AdminHandler(r);
+    }
+
+    public routerReturner () {
+        return this.router;
+    }
 }
 
-export default AdminHandler;
+export default AdminHandler.create(router).routerReturner();

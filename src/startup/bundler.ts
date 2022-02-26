@@ -6,11 +6,11 @@ import db from "./db";
 import config from "./config";
 
 class Bundler {
-    static bundle (app: Express) {
-        config();
-        logger();
-        db();
-        route(app);
+    public static init (app: Express) {
+        config.init();
+        logger.init();
+        db.connect();
+        route.init(app);
     }
 }
 

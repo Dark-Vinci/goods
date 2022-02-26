@@ -1,18 +1,26 @@
-import { Express, Router } from "express";
+import express, { Router } from "express";
+
+const router: Router = express.Router();
 
 class GoodHandler {
-    public path: String = "/goods";
     private router = Router();
 
-    constructor(router: Express) {
+    constructor(router: Router) {
         this.router = router;
-    }
 
-    private initializeRoutes () {
+
         this.router.get('/create', );
         this.router.post(`$`)
         this.router.delete('/delte',)
     }
+
+    public static create(r: Router) {
+        return new GoodHandler(r);
+    }
+
+    public routerReturner () {
+        return this.router;
+    }
 }
 
-export default GoodHandler;
+export default GoodHandler.create(router).routerReturner();
